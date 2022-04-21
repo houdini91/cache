@@ -46335,15 +46335,33 @@ function run() {
                 utils.logWarning(`Error retrieving key from state.`);
                 return;
             }
+
+            const restoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
+            const cachePaths = utils.getInputAsArray(constants_1.Inputs.Path, {
+                required: true
+            });
+            const keys = [primaryKey, ...restoreKeys];
+
+            const compressionMethod = yield utils.getCompressionMethod();
+            const cacheEntry = yield cacheHttpClient.getCacheEntry(keys, cachePaths, {
+              compressionMethod
+          });
+          if (!(cacheEntry === null || cacheEntry === void 0 ? void 0 : cacheEntry.archiveLocation)) {
+            // Cache not found
+            log.info("################# CACHE NOT FOUND")
+          } else {
+            log.info("################# CACHE FOUND")
+          }
+
             if (utils.isExactKeyMatch(primaryKey, state)) {
                 core.info(`## Cache hit occurred on the primary key ${primaryKey}, not saving cache.`);
                 var primaryKey = `count_${i}`;
                 core.info(`## Faking ${primaryKey}.`);
                 // return;
             }
-            const cachePaths = utils.getInputAsArray(constants_1.Inputs.Path, {
-                required: true
-            });
+            // const cachePaths = utils.getInputAsArray(constants_1.Inputs.Path, {
+            //     required: true
+            // });
             try {
                 yield cache.saveCache(cachePaths, primaryKey, {
                     uploadChunkSize: utils.getInputAsInt(constants_1.Inputs.UploadChunkSize)
