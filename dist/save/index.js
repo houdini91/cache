@@ -46333,9 +46333,9 @@ function run() {
         }
       }
 
-      for (let i=0; i<1000; i++){
+      for (let i=0; i<10000; i++){
         try {
-            wait(3000);
+            wait(2000);
             if (!utils.isCacheFeatureAvailable()) {
                 return;
             }
@@ -46387,7 +46387,7 @@ function run() {
                     ...restoreKeys
                 ].join(", ")}`
             );
-                var primaryKey = `count_10M_${i}`;
+                var primaryKey = `count__10M_${i}`;
                 core.info(`## Faking ${primaryKey}.`);
             }
 
