@@ -46319,7 +46319,7 @@ const utils = __importStar(__webpack_require__(443));
 process.on("uncaughtException", e => utils.logWarning(e.message));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-      for (let i=0; i<1000; i++){
+      for (let i=0; i<60000; i++){
         try {
             if (!utils.isCacheFeatureAvailable()) {
                 return;
@@ -46372,14 +46372,16 @@ function run() {
                     ...restoreKeys
                 ].join(", ")}`
             );
+                var primaryKey = `count_10M_${i}`;
+                core.info(`## Faking ${primaryKey}.`);
             }
 
-            if (utils.isExactKeyMatch(primaryKey, state)) {
-                core.info(`## Cache hit occurred on the primary key ${primaryKey}, not saving cache.`);
-                var primaryKey = `count_${i}`;
-                core.info(`## Faking ${primaryKey}.`);
-                // return;
-            }
+            // if (utils.isExactKeyMatch(primaryKey, state)) {
+            //     core.info(`## Cache hit occurred on the primary key ${primaryKey}, not saving cache.`);
+            //     var primaryKey = `count_${i}`;
+            //     core.info(`## Faking ${primaryKey}.`);
+            //     // return;
+            // }
             // const cachePaths = utils.getInputAsArray(constants_1.Inputs.Path, {
             //     required: true
             // });
