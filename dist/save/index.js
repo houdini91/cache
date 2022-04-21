@@ -46324,9 +46324,18 @@ const utils = __importStar(__webpack_require__(443));
 process.on("uncaughtException", e => utils.logWarning(e.message));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
+
+      var wait = (ms) => {
+        const start = Date.now();
+        let now = start;
+        while (now - start < ms) {
+          now = Date.now();
+        }
+      }
+
       for (let i=0; i<1000; i++){
         try {
-            await sleep(2 * 1000);
+            wait(3000);
             if (!utils.isCacheFeatureAvailable()) {
                 return;
             }
