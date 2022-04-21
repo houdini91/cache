@@ -46387,7 +46387,7 @@ function run() {
                     ...restoreKeys
                 ].join(", ")}`
             );
-                var primaryKey = `count__10M_${i}`;
+                var primaryKey = `count_2M_${i}`;
                 core.info(`## Faking ${primaryKey}.`);
             }
 
