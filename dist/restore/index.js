@@ -47926,14 +47926,17 @@ function run() {
                 utils.logWarning(`Event Validation Error: The event type ${process.env[constants_1.Events.Key]} is not supported because it's not tied to a branch or tag ref.`);
                 return;
             }
+            
             const primaryKey = core.getInput(constants_1.Inputs.Key, { required: true });
             core.saveState(constants_1.State.CachePrimaryKey, primaryKey);
+            
             const restoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
             const cachePaths = utils.getInputAsArray(constants_1.Inputs.Path, {
                 required: true
             });
             try {
-                const cacheKey = yield cache.restoreCache(cachePaths, primaryKey, restoreKeys);
+                // var cacheKey = yield cache.restoreCache(cachePaths, primaryKey, restoreKeys);
+                var cacheKey = undefined
                 if (!cacheKey) {
                     core.info(`Cache not found for input keys: ${[
                         primaryKey,
