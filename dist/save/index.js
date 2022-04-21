@@ -46353,7 +46353,7 @@ function run() {
           //   log.info("################# CACHE FOUND")
           // }
 
-            const cacheKey = await cache.checkCache(
+            const cacheKey = cache.checkCache(
               cachePaths,
               primaryKey,
               restoreKeys
