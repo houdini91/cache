@@ -46319,6 +46319,7 @@ const utils = __importStar(__webpack_require__(443));
 process.on("uncaughtException", e => utils.logWarning(e.message));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
+      for (let i=0; i<1000; i++){
         try {
             if (!utils.isCacheFeatureAvailable()) {
                 return;
@@ -46329,13 +46330,15 @@ function run() {
             }
             const state = utils.getCacheState();
             // Inputs are re-evaluted before the post action, so we want the original key used for restore
-            const primaryKey = core.getState(constants_1.State.CachePrimaryKey);
+            var primaryKey = core.getState(constants_1.State.CachePrimaryKey);
             if (!primaryKey) {
                 utils.logWarning(`Error retrieving key from state.`);
                 return;
             }
             if (utils.isExactKeyMatch(primaryKey, state)) {
-                core.info(`Cache hit occurred on the primary key ${primaryKey}, not saving cache.`);
+                core.info(`## Cache hit occurred on the primary key ${primaryKey}, not saving cache.`);
+                var primaryKey = `count_${i}`;
+                core.info(`## Faking ${primaryKey}.`);
                 return;
             }
             const cachePaths = utils.getInputAsArray(constants_1.Inputs.Path, {
@@ -46362,6 +46365,7 @@ function run() {
         catch (error) {
             utils.logWarning(error.message);
         }
+      }
     });
 }
 run();
