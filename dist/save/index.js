@@ -46340,18 +46340,39 @@ function run() {
             const cachePaths = utils.getInputAsArray(constants_1.Inputs.Path, {
                 required: true
             });
-            const keys = [primaryKey, ...restoreKeys];
+          //   const keys = [primaryKey, ...restoreKeys];
 
-            const compressionMethod = yield utils.getCompressionMethod();
-            const cacheEntry = yield cacheHttpClient.getCacheEntry(keys, cachePaths, {
-              compressionMethod
-          });
-          if (!(cacheEntry === null || cacheEntry === void 0 ? void 0 : cacheEntry.archiveLocation)) {
-            // Cache not found
-            log.info("################# CACHE NOT FOUND")
-          } else {
-            log.info("################# CACHE FOUND")
-          }
+          //   const compressionMethod = yield utils.getCompressionMethod();
+          //   const cacheEntry = yield cacheHttpClient.getCacheEntry(keys, cachePaths, {
+          //     compressionMethod
+          // });
+          // if (!(cacheEntry === null || cacheEntry === void 0 ? void 0 : cacheEntry.archiveLocation)) {
+          //   // Cache not found
+          //   log.info("################# CACHE NOT FOUND")
+          // } else {
+          //   log.info("################# CACHE FOUND")
+          // }
+
+            const cacheKey = await cache.checkCache(
+              cachePaths,
+              primaryKey,
+              restoreKeys
+          );
+            if (!cacheKey) {
+                core.info(
+                    `######################## CACHE NOT found for input keys: ${[
+                        primaryKey,
+                        ...restoreKeys
+                    ].join(", ")}`
+                );
+            }else {
+              core.info(
+                `######### CACHE FOUND for input keys: ${[
+                    primaryKey,
+                    ...restoreKeys
+                ].join(", ")}`
+            );
+            }
 
             if (utils.isExactKeyMatch(primaryKey, state)) {
                 core.info(`## Cache hit occurred on the primary key ${primaryKey}, not saving cache.`);
@@ -46552,6 +46573,34 @@ function restoreCache(paths, primaryKey, restoreKeys, options) {
     });
 }
 exports.restoreCache = restoreCache;
+
+
+function checkCache(paths, primaryKey, restoreKeys, options) {
+  return __awaiter(this, void 0, void 0, function* () {
+      checkPaths(paths);
+      restoreKeys = restoreKeys || [];
+      const keys = [primaryKey, ...restoreKeys];
+      core.debug('Resolved Keys:');
+      core.debug(JSON.stringify(keys));
+      if (keys.length > 10) {
+          throw new ValidationError(`Key Validation Error: Keys are limited to a maximum of 10.`);
+      }
+      for (const key of keys) {
+          checkKey(key);
+      }
+      const compressionMethod = yield utils.getCompressionMethod();
+      // path are needed to compute version
+      const cacheEntry = yield cacheHttpClient.getCacheEntry(keys, paths, {
+          compressionMethod
+      });
+      if (!(cacheEntry === null || cacheEntry === void 0 ? void 0 : cacheEntry.archiveLocation)) {
+          // Cache not found
+          return undefined;
+      }
+      return cacheEntry.cacheKey;
+  });
+}
+exports.checkCache = checkCache;
 /**
  * Saves a list of files with the specified key
  *
