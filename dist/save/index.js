@@ -46333,9 +46333,9 @@ function run() {
         }
       }
 
-      for (let i=0; i<10000; i++){
+      for (let i=0; i<500; i++){
         try {
-            wait(300);
+            wait(500);
             if (!utils.isCacheFeatureAvailable()) {
                 return;
             }
