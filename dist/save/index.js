@@ -46380,6 +46380,7 @@ function run() {
                         ...restoreKeys
                     ].join(", ")}`
                 );
+                break 
             }else {
               core.info(
                 `######### CACHE FOUND for input keys: ${[
