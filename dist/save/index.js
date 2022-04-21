@@ -46339,7 +46339,7 @@ function run() {
                 core.info(`## Cache hit occurred on the primary key ${primaryKey}, not saving cache.`);
                 var primaryKey = `count_${i}`;
                 core.info(`## Faking ${primaryKey}.`);
-                return;
+                // return;
             }
             const cachePaths = utils.getInputAsArray(constants_1.Inputs.Path, {
                 required: true
