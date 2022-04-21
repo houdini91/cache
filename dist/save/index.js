@@ -46326,7 +46326,7 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
       for (let i=0; i<1000; i++){
         try {
-            sleep(2 * 1000);
+            await sleep(2 * 1000);
             if (!utils.isCacheFeatureAvailable()) {
                 return;
             }
